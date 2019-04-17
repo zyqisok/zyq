@@ -1,0 +1,9 @@
+##包结构说明：
+com.zyq                 项目启动入口
+com.zyq.entities      项目表实体类
+com.zyq.consts       项目常量类
+com.zyq.controller     项目窗口类
+com.zyq.service          项目服务接口
+com.zyq.service.impl  项目服务接口实现层
+com.zyq.dao              项目数据库交互层
+com.zyq.tool              项目工具包
