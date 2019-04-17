@@ -23,7 +23,7 @@ public class UserController {
     @ResponseBody
     public String index(){
         User user = new User();
-        user.setName("我梦江南好");
+        user.setName("zyq");
         userService.save(user);
         return "this is user index";
     }
