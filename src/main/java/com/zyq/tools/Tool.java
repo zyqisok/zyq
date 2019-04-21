@@ -7,4 +7,14 @@ package com.zyq.tools;
  */
 public class Tool {
 
+	/**
+	 * 字符串空处理（并去掉首位空格）
+	 * @param s 待处理字符串
+	 * @return 已处理字符串（null返回空字符串）
+	 */
+	public static String toString(String s) {
+		return s == null ? "" : s.trim();
+	}
+
+
 }
