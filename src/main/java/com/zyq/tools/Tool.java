@@ -16,5 +16,5 @@ public class Tool {
 		return s == null ? "" : s.trim();
 	}
 
-
+	
 }

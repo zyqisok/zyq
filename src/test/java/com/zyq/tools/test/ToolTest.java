@@ -6,6 +6,11 @@ import org.junit.Test;
 
 import com.zyq.tools.Tool;
 
+/**
+ * 基础工具类测试代码
+ * @author zyq
+ * @date 2019-04-22
+ */
 public class ToolTest {
 
 	@Test
