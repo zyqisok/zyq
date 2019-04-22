@@ -14,6 +14,8 @@ public class User extends BaseBean {
 
     String name;
     String loginName;
+    String password;
+
     int sex;
 
     public String getName() {
