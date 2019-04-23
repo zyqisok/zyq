@@ -45,22 +45,31 @@ $(function () {
     	var loginName = $("#username").val();
     	var password = $("#password").val();
         if(isEmpty(loginName)){
-            $("#tip").text("登录帐号不能为空");
-            $("#tip").show();
+            $("#tip").text("请填写用户名");
             return;
         }
+        if(isEmpty(password)){
+            $("#tip").text("请填写密码");
+            return;
+        }
+        var data = {
+        		loginName: loginName,
+        		password: password
+        }
+        $.post("/user/login", data, function(rs){
+            if(rs)
+        });
     });
 });
 </script>
 <body>
     <div class="dowebok">
         <div class="logo"></div>
-        <div class="form-item"><p class="tip" id="tip">sss</p></div>
         <div class="form-item">
-            <input id="username" type="text" placeholder="登录账号" maxlength="20" value="">
+            <input id="username" type="text" placeholder="用户名" maxlength="20" value="">
         </div>
         <div class="form-item">
-            <input id="password" type="password" placeholder="登录密码" maxlength="20" value="">
+            <input id="password" type="password" placeholder="密码" maxlength="20" value="">
         </div>
         <div class="form-item"><button id="submit" type="button">登 录</button></div>
         <div class="reg-bar">
