@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>绿色清爽响应式登录页面模板</title>
+    <title>登录</title>
     <link rel="stylesheet" href="/css/base.css">
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/js/base.js"></script>
     <script type="text/javascript" src="/js/jquery.md5.js"></script>
+    <script type="text/javascript" src="/js/layer/layer.js"></script>
     <style>
         * { margin: 0; padding: 0; }
         html { height: 100%; }
@@ -19,7 +20,6 @@
         .form-item button { width: 360px; height: 50px; border: 0; border-radius: 25px; font-size: 18px; color: #1f6f4a; outline: none; cursor: pointer; background-color: #fff; }
         #username { background: url(/images/login/emil.png) 20px 14px no-repeat; }
         #password { background: url(/images/login/password.png) 23px 11px no-repeat; }
-        .tip {             position: absolute; left: 20px; top: 52px; font-size: 14px; color: #f50; }
         .reg-bar { width: 360px; margin: 20px auto 0; font-size: 14px; overflow: hidden;}
         .reg-bar a { color: #fff; text-decoration: none; }
         .reg-bar a:hover { text-decoration: underline; }
@@ -40,24 +40,30 @@
     </style>
 </head>
 <script>
-$(function () {
-    $('#submit').on('click', function(){
-    	var loginName = $("#username").val();
-    	var password = $("#password").val();
-        if(isEmpty(loginName)){
-            $("#tip").text("请填写用户名");
+$(function() {
+    $('#submit').on('click', function() {
+        var loginName = $("#username").val();
+        var password = $("#password").val();
+        if(isEmpty(loginName)) {
+            layer.alert("请填写用户名");
             return;
         }
         if(isEmpty(password)){
-            $("#tip").text("请填写密码");
+            layer.alert("请填写密码");
             return;
         }
         var data = {
-        		loginName: loginName,
-        		password: password
+                loginName: loginName,
+                password: $.md5(password) // 密码MD5加密
         }
-        $.post("/user/login", data, function(rs){
-            if(rs)
+        $.post("/user/login", data, function(rs) {
+            if(rs.code != 0){
+                // 跳转到首页
+                window.location.href = "/";
+            } else {
+                // 错误弹窗
+                layer.alert(rs.msg);
+            }
         });
     });
 });
