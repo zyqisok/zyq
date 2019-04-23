@@ -75,13 +75,24 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <!-- <version>4.3.6</version> --><!--$NO-MVN-MAN-VER$ -->
         </dependency>
         <!-- HttpClinet 请求时，涉及文件上传需要的包 -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <!-- <version>4.3.6</version> --><!--$NO-MVN-MAN-VER$ -->
+        </dependency>
+        <!-- POI 表格文件处理-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <!-- JSON 解析-->
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
         </dependency>
     </dependencies>
 </project>
