@@ -1,9 +1,34 @@
 ##包结构说明：
-com.zyq                 项目启动入口
-com.zyq.entities      项目表实体类
-com.zyq.consts       项目常量类
-com.zyq.controller     项目窗口类
-com.zyq.service          项目服务接口
-com.zyq.service.impl  项目服务接口实现层
-com.zyq.dao              项目数据库交互层
-com.zyq.tool              项目工具包
+zyq
+    src/main/java # 项目源码
+        com.zyq #启动类包，里面仅一个MainApp.java文件，执行里面的main()方法即可启动项目
+        com.zyq.annotation #注解类包，用于存放所有注解定义
+        com.zyq.beans #表实体类包
+        com.zyq.consts #常量类包
+        com.zyq.controller #接收前台请求包
+        com.zyq.interceptor #请求拦截器包
+        com.zyq.repository #后台与数据库交互层
+        com.zyq.service #服务接口定义
+        com.zyq.service.impl #服务接口实现
+        com.zyq.tools #工具类包
+    src/main/resources
+        document #存放各种文档
+            表结构.xlsx #表字段结构
+            项目结构说明.txt #就是你现在看的这个文档
+            需求文档.docx #项目功能需求说明
+        static #存放静态文件
+            css #存放各种css文件
+            images #存放各种图标文件
+            js #存放各种js文件
+        templates #存放所有html文件（下面每个文件夹按模块分，对应后台相应Controller，比如user文件夹对应后台UserController.java）
+            user #存放用户模块相关html文件
+            index.html #主页html文件
+        application.yml #项目配置文件
+        logback.xml #该文件主要关闭后台Httpclient的请求中一大堆的debug
+    src/test/java #
+        com.zyq.tools.test #工具类测试包
+    JRE System Library[jdk 1.8.0_72] #jdk环境（我们项目目前为使用JDK1.8）
+    Maven Dependencies #Maven相关jar包
+    src #源码编译文件
+    traget #项目打包文件夹，项目打包后这里面会有相关jar包，Linux上放的就是该jar
+    pom.xml #maven配置文件
