@@ -4,6 +4,9 @@ import java.sql.Clob;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import net.sf.json.JSONArray;
 
 import com.zyq.tools.Tool;
 
@@ -39,6 +42,46 @@ public class JuHeCai extends BaseBean {
      * eg：[{"img":"http://juheimg.oss-cn-hangzhou.aliyuncs.com/cookbook/s/6/505_55602b6cec1d0b27.jpg","step":"1.首先用喷枪给肉皮烧黑"},{"img":"http://juheimg.oss-cn-hangzhou.aliyuncs.com/cookbook/s/6/505_61850dfdaaee31c4.jpg","step":"2.然后给肉泡在冷水里一会儿，再拿出来用刀给黑的东西刮掉清洗干净"}]
      */
     Clob steps;
+
+    /**
+     * 主图显示
+     */
+    @Transient
+    String main;
+
+    public String getMain() {
+        if (main != null) {
+            return main;
+        }
+        try {
+            main = JSONArray.fromObject(getAlbums()).getString(0);
+        } catch (Exception e) {}
+        return main;
+    }
+
+    public void setImtro(Clob imtro) {
+        this.imtro = imtro;
+    }
+
+    public void setIngredients(Clob ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setBurden(Clob burden) {
+        this.burden = burden;
+    }
+
+    public void setAlbums(Clob albums) {
+        this.albums = albums;
+    }
+
+    public void setSteps(Clob steps) {
+        this.steps = steps;
+    }
+
+    public void setMain(String main) {
+        this.main = main;
+    }
 
     public String getJuheId() {
         return juheId;

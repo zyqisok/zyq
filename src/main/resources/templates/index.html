@@ -2,14 +2,24 @@
 <html>
 <head>
 <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.css"/>
 <style type="text/css">
 .main {width: 1200px; margin:0 auto;}
-.logo{width: 150px; padding:5px; float: left;}
+.logo{width: 150px; padding:5px; float: left; font-size: 20px; font-family: "楷体"; color: black;}
 .menu{width: 100px; padding:5px; float: left;}
 header {background-color:#87CEFA;color:white;text-align:center; padding:5px; width: 1190px; float: left;} 
-nav {line-height:30px;background-color:#87CEFA; color:white; height:700px;width:150px;float:left;padding:5px; }
-section {width:1030px; float:left;padding:5px;}
+nav {line-height:30px;background-color:#87CEFA; color:white; height:700px;width:150px;float:left;padding:5px; text-align: center}
+section {width:1030px; padding:5px; float: right}
 footer {background-color:black;color:white;clear:both;text-align:center;padding:5px;}
+.search-box{height: 30px}
+.pic-show-box{height:680px; width:1010px; text-align: center; background-color: #EDEDED;}
+.pic-frame{padding:10px 10px 0 10px;}
+.pic-li{border:2px solid #fff; background-color:#fff; float:left; width:100px; height:130px; margin:5px 5px 5px 5px; cursor:pointer;}
+.pic-li:hover{border:2px solid #dadada;}
+.pic-img-box{display:table-cell; width:100px; height:100px; text-align:center; vertical-align:middle;}
+.pic-img-box img{max-height:100%; max-width:100%;}
+.font5{font-size: 5px}
 </style>
 <script type="text/javascript">
 $(function(){
@@ -21,14 +31,6 @@ $(function(){
     $(".menu").mouseleave(function(){
         $(this).css("background","#87CEFA");
     });
-    // 鼠标停留导航栏，背景色变黑
-    $(".navc").mouseover(function(){
-        $(this).css("color","#7A7A7A");
-    });
-    // 鼠标离开菜单，背景色恢复黑色
-    $(".navc").mouseleave(function(){
-        $(this).css("color","white");
-    });
 });
 </script>
 <meta charset="UTF-8">
@@ -39,38 +41,33 @@ $(function(){
 <div class="main">
 <!-- 头 -->
 <header>
-    <div class="logo">
-        Logo
-    </div>
+    <div class="logo">梦江南</div>
     <div class="menu">主页</div>
     <div class="menu">新闻</div>
-    <div class="menu">生活</div>
+    <div class="menu" style="background: #8C8C8C">生活</div>
     <div class="menu">音乐</div>
     <div class="menu">博客</div>
     <div class="menu">其他</div>
 </header>
 <!-- 左侧导航 -->
 <nav>
-    <div class="navc">Top50</div>
-    <div class="navc">流行音乐</div>
-    <div class="navc">伤感音乐</div>
+    <div class="navc" style="background: #8C8C8C">菜谱</div>
 </nav>
 <!-- 内容 -->
 <section>
-<h1>Music</h1>
-<p>
-Standing on the River Thames, London has been a major settlement for two millennia,
-its history going back to its founding by the Romans, who named it Londinium.
-</p>
-<p>
-Standing on the River Thames, London has been a major settlement for two millennia,
-its history going back to its founding by the Romans, who named it Londinium.
-</p>
+<div class="search-box">
+    <input type="text" > <button>搜索</button>
+</div>
+<div class="pic-show-box">
+    <div class="pic-li" th:each="cai:${caiList}">
+        <div class="pic-img-box">
+            <!-- <img th:src="${cai.main}"> -->
+            <img src="#">
+        </div>
+        <div th:text="${cai.title}" class="font5"></div>
+    </div>
+</div>
 </section>
-<!-- 页脚 -->
-<!-- <footer>
-备案编号：蜀ISO-98273
-</footer> -->
 </div>
 </body>
 </html>
