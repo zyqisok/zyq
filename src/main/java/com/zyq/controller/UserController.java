@@ -25,5 +25,4 @@ public class UserController {
         userService.save(user);
         return "user/login";
     }
-
 }
