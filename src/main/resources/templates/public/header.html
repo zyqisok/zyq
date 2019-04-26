@@ -1,0 +1,25 @@
+<meta charset="UTF-8">
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+<script>
+$(function(){
+    // 鼠标停留菜单，背景色变淡
+    $(".menu").mouseover(function(){
+        $(this).css("background","#8C8C8C");
+    });
+    // 鼠标离开菜单，背景色恢复黑色
+    $(".menu").mouseleave(function(){
+        $(this).css("background","#87CEFA");
+    });
+});
+</script>
+
+<!-- 头 -->
+<header>
+    <div class="logo">梦江南</div>
+    <div class="menu">主页</div>
+    <div class="menu">新闻</div>
+    <div class="menu" style="background: #8C8C8C"><a href="/">菜谱</a></div>
+    <div class="menu">音乐</div>
+    <div class="menu">博客</div>
+    <div class="menu">其他</div>
+</header>

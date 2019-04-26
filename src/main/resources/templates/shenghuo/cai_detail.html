@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title th:text="${cai.title}"></title>
+<link rel="stylesheet" href="/css/base.css"/>
+</head>
+<body>
+<div class="main">
+<!-- 头 -->
+<div th:include="/public/header"></div>
+<section>
+    <div class="pic-li2 cai-div" th:each="step:${cai.stepList}">
+        <div class="pic-img-box">
+            <img th:src="${step.value}">
+        </div>
+        <div th:text="${step.key}"></div>
+    </div>
+</section>
+</div>
+</body>
+</html>
