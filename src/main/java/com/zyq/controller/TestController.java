@@ -68,7 +68,7 @@ public class TestController {
         KeyWordService.save(find);
         if (isFind) {
             // 查找数据库即可
-            List<JuHeCai> caiList = juheCaiService.findByTitleLike(cai);
+            List<JuHeCai> caiList = juheCaiService.findByTitleContaining(cai);
             return caiList;
         }
         List<JuHeCai> caiList = new ArrayList<JuHeCai>();

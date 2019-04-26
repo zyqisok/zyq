@@ -3,7 +3,7 @@ package com.zyq.vo;
 public class Pager {
 
     long total = 0;
-    int size = 20;
+    int size = 30;
     int page = 1;
     int totalPage = 0;
     public long getTotal() {

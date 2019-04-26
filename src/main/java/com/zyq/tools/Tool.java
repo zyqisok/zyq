@@ -34,7 +34,7 @@ public class Tool {
      * @param o 待转化对象
      * @return int数字
      */
-    public static int getInt(Object o){
+    public static int getInt(Object o) {
         if (o == null) return 0;
         try {
             return Integer.valueOf(o.toString());
@@ -45,8 +45,11 @@ public class Tool {
 
     /**
      * Clob 转 String
+     * @param c Clob类型
+     * @return String类型
      */
-    public static String getString(Clob c){
+    public static String getString(Clob c) {
+        if (c == null) return null;
         try {
             return c.getSubString(1, (int) c.length());
         } catch (Exception e) {
@@ -56,8 +59,11 @@ public class Tool {
 
     /**
      * String 转 Clob
+     * @param s String类型
+     * @return Clob类型
      */
     public static Clob getClob(String s){
+        if (s == null) return null;
         try {
             return new SerialClob(s.toCharArray());
         } catch (Exception e) {

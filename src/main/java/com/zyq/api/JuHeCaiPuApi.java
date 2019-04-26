@@ -55,8 +55,7 @@ public class JuHeCaiPuApi {
      * @param index 列表起始下标
      * @param size 列表个数（最大30）
      */
-    public static RespJuHeCai getCaiList(String cai, int index, int size){
-        System.out.println(cai + "--" + index + "--" + size);
+    public static RespJuHeCai getCaiList(String cai, int index, int size) {
         if (Tool.isEmpty(cai)) return new RespJuHeCai();
         if (index < 0) index = 0;
         if (size > 30) size = 30;
@@ -80,16 +79,20 @@ public class JuHeCaiPuApi {
         List<JuHeCai> caiList = new ArrayList<JuHeCai>();
         for (int i = 0; i < data.size(); i++) {
             JSONObject obj = data.getJSONObject(i);
-            JuHeCai juHeCai = new JuHeCai();
-            juHeCai.setJuheId(obj.getString("id"));
-            juHeCai.setTitle(obj.getString("title"));
-            juHeCai.setTags(obj.getString("tags"));
-            juHeCai.setImtro(obj.getString("imtro"));
-            juHeCai.setIngredients(obj.getString("imtro"));
-            juHeCai.setBurden(obj.getString("burden"));
-            juHeCai.setAlbums(obj.getJSONArray("albums").toString());
-            juHeCai.setSteps(obj.getJSONArray("steps").toString());
-            caiList.add(juHeCai);
+            try {
+                JuHeCai juHeCai = new JuHeCai();
+                juHeCai.setJuheId(obj.getString("id"));
+                juHeCai.setTitle(obj.getString("title"));
+                juHeCai.setTags(obj.getString("tags"));
+                juHeCai.setImtro(obj.getString("imtro"));
+                juHeCai.setIngredients(obj.getString("imtro"));
+                juHeCai.setBurden(obj.getString("burden"));
+                juHeCai.setAlbums(obj.getJSONArray("albums").toString());
+                juHeCai.setSteps(obj.getJSONArray("steps").toString());
+                caiList.add(juHeCai);
+            } catch (Exception e) {
+                logger.equals("解析菜谱出错：" + obj.toString());
+            }
         }
         RespJuHeCai respJuHeCai = new RespJuHeCai();
         respJuHeCai.setData(caiList);

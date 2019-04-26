@@ -21,9 +21,11 @@ $(function(){
 <div th:include="/public/header"></div>
 <!-- 内容 -->
 <section>
-<div class="search-box">
-    <input type="text" value=""> <button>搜索</button>
-</div>
+<form action="/shenghuo/getCaiList" method="post">
+    <div class="search-box">
+        <input type="text" th:value="${key}" name="key" maxlength="20"> <button>搜索</button>
+    </div>
+</form>
 <div class="pic-li cai-div" th:each="cai:${caiList}">
         <div class="pic-img-box">
             <img th:src="${cai.main}">

@@ -8,6 +8,6 @@ import com.zyq.beans.JuHeCai;
 
 @Repository
 public interface JuheCaiRepository extends BaseRepository<JuHeCai>{
-    List<JuHeCai> findByTitleLike(String cai);
+    List<JuHeCai> findByTitleContaining(String cai);
     JuHeCai findByJuheId(String juheId);
 }
