@@ -1,14 +1,18 @@
 package com.zyq.beans;
 
 import java.sql.Clob;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import com.zyq.tools.Tool;
+import com.zyq.vo.Pair;
 
 /**
  * 聚合菜谱
@@ -48,6 +52,31 @@ public class JuHeCai extends BaseBean {
      */
     @Transient
     String main;
+
+    /**
+     * 步骤
+     */
+    @Transient
+    List<Pair> stepList;
+
+    public List<Pair> getStepList() {
+        if (stepList != null) {
+            return stepList;
+        }
+        stepList = new ArrayList<Pair>();
+        try {
+            JSONArray array = JSONArray.fromObject(getSteps());
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                stepList.add(new Pair(obj.getString("step"), obj.getString("img")));
+            }
+        } catch (Exception e) {}
+        return stepList;
+    }
+
+    public void setStepList(List<Pair> stepList) {
+        this.stepList = stepList;
+    }
 
     public String getMain() {
         if (main != null) {

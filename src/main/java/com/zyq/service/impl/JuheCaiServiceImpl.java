@@ -47,4 +47,9 @@ public class JuheCaiServiceImpl implements JuheCaiService {
         return list;
     }
 
+    @Override
+    public JuHeCai findById(Long id) {
+        return juheCaiRepository.findById(id).get();
+    }
+
 }
