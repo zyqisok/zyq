@@ -47,7 +47,9 @@ public class JuHeCaiPuApi {
 
     public static final Logger logger = LoggerFactory.getLogger(JuHeCaiPuApi.class);
 
-    public static final String APP_KEY = "57d4a473c0665a550a83b712966d7bfe";
+    // public static final String APP_KEY = "57d4a473c0665a550a83b712966d7bfe"; // 我（已使用完）
+    // public static final String APP_KEY = "44fe067a9f93c85a55b0d0afda2e3f4f"; // 婵（15229346987）
+    public static final String APP_KEY = "97a0571c18f2803bb6e675f357c7c38a"; // 吻刀（18631185797）
 
     /**
      * 搜索菜谱列表
