@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5</title>
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+</head>
+<script type="text/javascript">
+$(function(){
+	//点击任意部位隐藏
+     $("#menu1").hide();
+	$(".mkdiv").bind("contextmenu", function(){
+	    return false;
+	});
+	// 鼠标停留菜单，背景色变淡
+	$(".mksss").mouseover(function(){
+	    $(this).css("background","#8C8C8C");
+	});
+	// 鼠标离开菜单，背景色恢复黑色
+	$(".mksss").mouseleave(function(){
+	    $(this).css("background","white");
+	});
+	//jQuery鼠标左击、右击和中击事件
+	$('.mksss2').mousedown(function(e){ 
+	      if(e.which == 3){ 
+	         // alert('这是右键单击事件');
+	         {
+	             //获取右键点击坐标
+	             var x = e.clientX;
+	             var y = e.clientY;
+	             $("#menu1").show().css({left:x,top:y});
+	         }
+	      }else if(e.which == 1){ 
+	         alert('这是左键单击事件'); 
+	      } else if(e.which == 2){ 
+	        alert('这是鼠标中键事件'); 
+	      } 
+	});
+});
+</script>
+<body>
+<div class="main">
+<!-- 头 -->
+<div th:include="public/header"></div>
+<!-- 内容 -->
+<section>
+<div class="mkdiv">
+    <a class="mksss mksss2">采购模块</a><br>
+   <a class="mksss mksss2">采购模块</a><br>
+    <a class="mksss mksss2">采购模块</a><br>
+</div>
+</section>
+</div>
+<div id="menu1">
+    <p id="del">删除</p>
+    <p id="update">修改</p>
+    <p id="send">发送数据</p>
+</div>
+</body>
+</html>

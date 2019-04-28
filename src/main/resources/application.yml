@@ -17,7 +17,7 @@ spring:
     url: jdbc:mysql://61.157.96.73:3306/zyq
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: 5******0
+    password: 51160210
     initial-size: 10
     max-active: 20
     max-idle: 8
