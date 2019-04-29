@@ -46,6 +46,10 @@ public class Resp<T> {
         return new Resp<>(SUCCESS, msg, null);
     }
 
+    public static <T> Resp<T> success(T body) {
+        return new Resp<>(SUCCESS, "", body);
+    }
+
     public static <T> Resp<T> success(String msg, T body) {
         return new Resp<>(SUCCESS, msg, body);
     }
