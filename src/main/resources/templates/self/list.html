@@ -10,21 +10,39 @@
 <div th:include="public/header"></div>
 <!-- 内容 -->
 <section>
+    <div>
+        <button id="addFlower">添加文件夹</button>
+        <button id="addNode">添加文件</button>
+        <button id="addNode">删除文件夹</button>
+        <button id="addNode">删除文件</button>
+        <button id="addNode">修改文件夹</button>
+        <button id="addNode">修改文件</button>
+    </div>
+    <hr/>
     <div class="treeDiv">
         <ul id="treeDemo" class="ztree"></ul>
     </div>
-    <button id="addNode">Add Node</button>
 </section>
 </div>
 </body>
 <script type="text/javascript">
+// 设置树属性
 var setting = {
         data: {
             simpleData: {
                 enable: true
             }
+        },
+        callback : {
+            // 文件/文件夹单击事件
+            onClick : zTreeOnClick,
+            // 文件夹收起事件
+            onCollapse : collapseNode,
+            // 文件夹展开事件
+            onExpand : expandNode
         }
-    };
+};
+// 加载树
 $(document).ready(function(){
     $.post("/self/initNodeTree",{},function(rs){
         if(rs.code == 0){
@@ -32,13 +50,60 @@ $(document).ready(function(){
         }
     });
 });
+
+// 单击事件
+function zTreeOnClick(event, treeId, treeNode) {
+    // alert(treeNode.tId + ", " + treeNode.name + "--" + treeNode.id);
+}
+
+// 收起事件
+function collapseNode(event, treeId, treeNode) {
+    // alert(treeNode.tId + ", " + treeNode.name + "--" + treeNode.id);
+}
+
+// 展开事件
+function expandNode(event, treeId, treeNode) {
+    var changed = treeNode.changed;
+    if(changed){
+        // 获取该树下的所有子节点
+        $.post("/self/getChildList", {pid: treeNode.id}, function(rs){
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            treeObj.removeChildNodes(treeNode);
+            treeObj.addNodes(treeNode, rs.body);
+            treeNode.changed = false;
+        });
+    }
+}
+
 $(function(){
-   $("#addNode").bind("click", function(){
-        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-        var selectedNode = treeObj.getSelectedNodes();
-        var newNode = { name: "testnewNode1"};
-        treeObj.addNodes(selectedNode[0], newNode);
-   });
+    // 新增文件夹
+    $("#addFlower").bind("click", function(){
+         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+         var selectedNode = treeObj.getSelectedNodes();
+         var pid = 0;
+         if(selectedNode != null){
+             pid = selectedNode[0].id;
+         }
+         var data = {
+                pid : pid,
+                name : "hello"
+         }
+         $.post("/self/addFloder", data, function(rs){
+             if(rs.code == 0){
+                 var newNode = { 
+                         name: rs.body.name, 
+                         id: rs.body.id,
+                         pId: rs.body.pId,
+                         isParent: true
+                 };
+                 treeObj.addNodes(selectedNode[0], newNode);
+             } else {
+                 alert(rs.msg);
+             }
+         })
+    });
+    // 获取子树
+    
 })
 </script>
 </html>

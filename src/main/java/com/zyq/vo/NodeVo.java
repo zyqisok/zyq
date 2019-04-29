@@ -6,6 +6,17 @@ public class NodeVo {
     private String name;
     private String url;
     private boolean isParent = false;
+    private boolean changed = true; // 1-界面需要查询，2-界面不需要ajax查询
+
+    public boolean getChanged() {
+        return changed;
+    }
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
+    public void setParent(boolean isParent) {
+        this.isParent = isParent;
+    }
     public Long getId() {
         return id;
     }
