@@ -12,11 +12,11 @@
 <section>
     <div>
         <button id="addFlower">添加文件夹</button>
-        <button id="addNode">添加文件</button>
+        <button id="addFile">添加文件</button>
         <button id="addNode">删除文件夹</button>
         <button id="addNode">删除文件</button>
-        <button id="addNode">修改文件夹</button>
-        <button id="addNode">修改文件</button>
+        <button id="updateFloder">修改文件夹</button>
+        <button id="updateFile">修改文件</button>
     </div>
     <hr/>
     <div class="treeDiv">
@@ -25,6 +25,31 @@
 </section>
 </div>
 </body>
+<!-- 文件夹 -->
+<div class="addFloder none">
+    <ul>
+        <li style="list-style: none;">
+            <div>
+                名称：<input type="text" maxlength="20">
+            </div>
+        </li>
+    </ul>
+</div>
+<!-- 文件 -->
+<div class="addFile none">
+    <ul>
+        <li style="list-style: none;">
+            <div>
+                名称：<input type="text" class="name" maxlength="20">
+            </div>
+        </li>
+        <li style="list-style: none; margin-top: 10px;">
+            <div>
+                链接：<input type="text" class="url" maxlength="255">
+            </div>
+        </li>
+    </ul>
+</div>
 <script type="text/javascript">
 // 设置树属性
 var setting = {
@@ -81,29 +106,108 @@ $(function(){
          var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
          var selectedNode = treeObj.getSelectedNodes();
          var pid = 0;
+         if(selectedNode.length > 0){
+             pid = selectedNode[0].id;
+         }
+         var index = layer.open({
+             type: 1,
+             area:['300px','auto'],
+             title: "添加文件夹",
+             btn:["确定","取消"],
+             content: $(".addFloder"),
+             yes: function(){
+                 var data = {
+                         pid : pid,
+                         name : $(".addFloder").find("input").val()
+                  }
+                  $.post("/self/addFloder", data, function(rs){
+                      if(rs.code == 0){
+                          var newNode = { 
+                                  name: rs.body.name, 
+                                  id: rs.body.id,
+                                  pId: rs.body.pId,
+                                  isParent: true
+                          };
+                          treeObj.addNodes(selectedNode[0], newNode);
+                          layer.close(index);
+                      } else {
+                          layer.alert(rs.msg);
+                      }
+                  });
+             }
+          });
+    });
+    // 新增文件
+    $("#addFile").bind("click", function(){
+         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+         var selectedNode = treeObj.getSelectedNodes();
+         var pid = 0;
          if(selectedNode != null){
              pid = selectedNode[0].id;
          }
          var data = {
                 pid : pid,
-                name : "hello"
+                name : "world"
          }
-         $.post("/self/addFloder", data, function(rs){
+         $.post("/self/addFile", data, function(rs){
              if(rs.code == 0){
                  var newNode = { 
                          name: rs.body.name, 
                          id: rs.body.id,
                          pId: rs.body.pId,
-                         isParent: true
+                         isParent: false
                  };
                  treeObj.addNodes(selectedNode[0], newNode);
              } else {
                  alert(rs.msg);
              }
-         })
+         });
     });
-    // 获取子树
-    
-})
+    // 修改文件夹
+    $("#updateFloder").live("click",function(){
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var selectedNode = treeObj.getSelectedNodes();
+        if(selectedNode.length == 0){
+            layer.alert("请选择文件夹");
+            return;
+        }
+        var name = selectedNode[0].name;
+        var id = selectedNode[0].id;
+        $(".addFloder").find("input").val(name);
+        var index = layer.open({
+          type: 1,
+          area:['300px','auto'],
+          title: "修改文件夹",
+          btn:["确定","取消"],
+          content: $(".addFloder"),
+          yes: function(){
+              var data = {
+                      id: id,
+                      name: $(".addFloder").find("input").val()
+              }
+              $.post("/self/updateFloder", data, function(rs){
+                  if(rs.code == 0){
+                      layer.close(index);
+                      selectedNode[0].name = rs.body.name;
+                      treeObj.refresh();
+                  } else {
+                      layer.alert(rs.msg);
+                  }
+              });
+          }
+        });
+    });
+
+    // 修改文件夹
+    $("#updateFile").live("click",function(){
+        layer.open({
+          type: 1,
+          area:['300px','auto'],
+          title: "修改文件",
+          btn:["确定","取消"],
+          content: $(".addFile")
+        });
+    });
+});
 </script>
 </html>

@@ -64,6 +64,8 @@ public class SelfController {
         vo.setName(node.getName());
         if (node.getType() == NodeType.FOLDER) {
             vo.setIsParent(true);
+        } else {
+            vo.setChanged(false);
         }
         return vo;
     }
@@ -88,6 +90,9 @@ public class SelfController {
             if (find == null) {
                 return Resp.error("父文件夹不存在");
             }
+            if (find.getType() != NodeType.FOLDER) {
+                return Resp.error("父级必须是文件夹");
+            }
         }
         name = Tool.toString(name);
         int len = name.length();
@@ -107,13 +112,77 @@ public class SelfController {
     }
 
     /**
+     * 添加文件夹
+     * @return
+     */
+    @RequestMapping("/addFile")
+    @ResponseBody
+    private Resp<NodeVo> addFile(long pid, String name, String url) {
+        if (pid != 0) {
+            Node find = nodeService.findById(0, pid);
+            if (find == null) {
+                return Resp.error("父文件夹不存在");
+            }
+            if (find.getType() != NodeType.FOLDER) {
+                return Resp.error("父级必须是文件夹");
+            }
+        }
+        name = Tool.toString(name);
+        int len = name.length();
+        if (len == 0) {
+            return Resp.error("文件名称不能为空");
+        }
+        if (len > 20) {
+            return Resp.error("文件名称过长");
+        }
+        Node node = new Node();
+        node.setType(NodeType.FILE);
+        node.setName(name);
+        node.setCreateTime(new Date());
+        node.setPid(pid);
+        node.setUrl(Tool.toString(url));
+        nodeService.save(node);
+        return Resp.success(getNodeVo(node));
+    }
+
+    /**
      * 获取所有子节点
      * @return
      */
     @RequestMapping("/getChildList")
     @ResponseBody
-    private Resp<List<NodeVo>> getChildList(long pid) {
+    public Resp<List<NodeVo>> getChildList(long pid) {
         List<Node> nodeList = nodeService.findByPid(0, pid);
         return Resp.success(getNodeVoList(nodeList));
+    }
+
+    /**
+     * 修改文件夹
+     * @param id
+     * @param name
+     * @return
+     */
+    @RequestMapping("/updateFloder")
+    @ResponseBody
+    public Resp<NodeVo> updateFloder(long id, String name) {
+        Node find = nodeService.findById(0, id);
+        if (find == null) {
+            return Resp.error("文件夹不存在");
+        }
+        if (find.getType() != NodeType.FOLDER) {
+            return Resp.error("必须是文件夹");
+        }
+        name = Tool.toString(name);
+        int len = name.length();
+        if (len == 0) {
+            return Resp.error("文件名称不能为空");
+        }
+        if (len > 20) {
+            return Resp.error("文件名称过长");
+        }
+        find.setUpdateTime(new Date());
+        find.setName(name);
+        nodeService.save(find);
+        return Resp.success(getNodeVo(find));
     }
 }

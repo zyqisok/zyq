@@ -6,7 +6,7 @@ public class NodeVo {
     private String name;
     private String url;
     private boolean isParent = false;
-    private boolean changed = true; // 1-界面需要查询，2-界面不需要ajax查询
+    private boolean changed = true; // true-界面需要查询，false-不需要ajax查询
 
     public boolean getChanged() {
         return changed;

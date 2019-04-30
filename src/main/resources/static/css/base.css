@@ -8,6 +8,8 @@ nav {line-height:30px;background-color:#87CEFA; color:white; height:700px;width:
 section {width:1200px; padding:5px; float: right; padding-top: 50px}
 footer {background-color:black;color:white;clear:both;text-align:center;padding:5px;}
 .search-box{height: 30px}
+.none{display: none;}
+input,textarea,select,button{font-family: '微软雅黑';;}
 
 .pic-frame{padding:10px 10px 0 10px;}
 .pic-li{border:2px solid #fff; background-color:#fff; float:left; width:180px; height:230px; margin:5px 5px 5px 5px; cursor:pointer;}
