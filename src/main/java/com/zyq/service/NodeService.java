@@ -8,7 +8,7 @@ public interface NodeService {
 
     void save(Node node);
 
-    void deleteById(long uid, long id);
+    void deleteById(long uid, long id, int type);
 
     Node findById(long uid, long id);
 

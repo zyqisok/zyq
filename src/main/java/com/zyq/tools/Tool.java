@@ -26,7 +26,7 @@ public class Tool {
      * @return true-字符串为空，false-字符串不为空
      */
     public static boolean isEmpty(String s) {
-        return toString(s).length() > 0 ? false : true;
+        return toString(s).length() == 0 ? true : false;
     }
 	
     /**
@@ -70,4 +70,5 @@ public class Tool {
             return null;
         }
     }
+
 }

@@ -25,12 +25,11 @@ public class HttpClientToolTest {
 
     @Test
     public void post() {
-        String url = "https://www.w3cschool.cn/checklogin";
+        String url = "http://m.hydcd.com/file/so.asp";
         Map<String, String> params = new HashMap<String, String>();
-        params.put("refer", "");
-        params.put("username", "18380379959");
-        params.put("password", "********"); // 密码略
-        params.put("remember", "1");
+        params.put("mov", "no");
+        params.put("ie", "gbk");
+        params.put("q", "一"); // 密码略
         String resp = HttpClientTool.post(url, params);
         System.out.println(resp);
     }

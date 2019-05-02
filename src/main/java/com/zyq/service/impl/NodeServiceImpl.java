@@ -21,8 +21,8 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public void deleteById(long uid, long id) {
-        nodeRepository.deleteByUidAndId(uid, id);
+    public void deleteById(long uid, long id, int type) {
+        nodeRepository.deleteById(uid, id, type);
     }
 
     @Override
