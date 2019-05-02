@@ -7,4 +7,6 @@ import com.zyq.beans.User;
 @Repository
 public interface UserRepository extends BaseRepository<User> {
 
+    User findByLoginName(String loginName);
+    User findByLoginNameAndPassword(String loginName, String password);
 }

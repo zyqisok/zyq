@@ -1,11 +1,15 @@
 package com.zyq.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zyq.beans.User;
 import com.zyq.service.UserService;
+import com.zyq.tools.Resp;
+import com.zyq.tools.Tool;
 
 /**
  * @author zyq
@@ -20,9 +24,48 @@ public class UserController {
 
     @RequestMapping("/toLogin")
     public String index(){
-        User user = new User();
-        user.setName("zyq");
-        userService.save(user);
         return "user/login";
+    }
+
+    /**
+     * 用户注册
+     * @param loginName 用户名
+     * @param loginPassword 密码
+     * @param surePassword 确认密码
+     * @return 注册结果
+     */
+    @RequestMapping("/register")
+    public Resp<String> register(String loginName, String loginPassword, String surePassword) {
+        // 验证用户名
+        if (Tool.isEmpty(loginName)) {
+            return Resp.error("用户名不能为空");
+        }
+        // 验证密码
+        if (Tool.toString(loginPassword).length() != 32 || Tool.toString(surePassword).length() != 32) {
+            return Resp.error("密码格式错误");
+        }
+        // 去空格
+        loginName = Tool.toString(loginName);
+        // 验证长度
+        if (loginName.length() > 20) {
+            return Resp.error("用户名过长");
+        }
+        // 验证用户名是否已经存在（重复）
+        User findUser = userService.findByLoginName(loginName);
+        if (findUser != null) {
+            return Resp.error("用户已经存在");
+        }
+        // 验证密码和确认密码是否一致
+        if (!loginPassword.equals(surePassword)) {
+            return Resp.error("密码和确认密码不一致");
+        }
+        // 新增用户
+        User user = new User();
+        user.setCreateTime(new Date());
+        user.setLoginName(loginName);
+        user.setName(loginName);
+        user.setPassword(loginPassword);
+        userService.save(user);
+        return Resp.success();
     }
 }
