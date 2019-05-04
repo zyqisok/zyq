@@ -5,7 +5,9 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zyq.beans.SessionKey;
 import com.zyq.beans.User;
 import com.zyq.service.UserService;
 import com.zyq.tools.Resp;
@@ -17,7 +19,7 @@ import com.zyq.tools.Tool;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -35,6 +37,7 @@ public class UserController {
      * @return 注册结果
      */
     @RequestMapping("/register")
+    @ResponseBody
     public Resp<String> register(String loginName, String loginPassword, String surePassword) {
         // 验证用户名
         if (Tool.isEmpty(loginName)) {
@@ -68,4 +71,20 @@ public class UserController {
         userService.save(user);
         return Resp.success();
     }
+
+    /**
+     * 登录
+     * @return
+     */
+    @RequestMapping("/login")
+    @ResponseBody
+    public Resp<String> login(String loginName, String loginPassword) {
+        User find = userService.findUser(loginName, loginPassword);
+        if (find == null) {
+            return Resp.error("用户名或密码错误");
+        }
+        sessionSave(SessionKey.USER_OBJECT, find);
+        return Resp.success();
+    }
+
 }

@@ -40,6 +40,51 @@
 </head>
 <script>
 $(function() {
+    // 注册
+    $("#registerBtn").click(function(){
+        var registerLayer = layer.open({
+            type:1,
+            area:['300px','auto'],
+            title: "注册帐号",
+            btn:["确定","取消"],
+            content: $(".registerBox"),
+            yes:function(){
+            	var $box = $(".registerBox");
+                var name = $box.find(".name").val();
+                var pwd = $box.find(".pwd").val();
+                var spwd = $box.find(".spwd").val();
+                if(isEmpty(name)){
+                    layer.alert("请填写登录用户");
+                    return;
+                }
+                if(isEmpty(pwd)){
+                    layer.alert("请填写登录密码");
+                    return;
+                }
+                if(isEmpty(spwd)){
+                    layer.alert("请填写确认密码");
+                    return;
+                }
+                if(pwd != spwd){
+                    layer.alert("登录密码和确认密码不一致");
+                    return;
+                }
+                var data = {
+                        loginName: name,
+                        loginPassword: $.md5(pwd),
+                        surePassword: $.md5(spwd)
+                }
+                $.post("/user/register", data, function(rs){
+                    if(rs.code == 0){
+                        layer.close(registerLayer);
+                        layer.alert("注册成功");
+                    } else{
+                        layer.alert(rs.msg);
+                    }
+                });
+            }
+		});
+	});
     $('#submit').on('click', function() {
         var loginName = $("#username").val();
         var password = $("#password").val();
@@ -53,10 +98,10 @@ $(function() {
         }
         var data = {
                 loginName: loginName,
-                password: $.md5(password) // 密码MD5加密
+                loginPassword: $.md5(password) // 密码MD5加密
         }
         $.post("/user/login", data, function(rs) {
-            if(rs.code != 0){
+            if(rs.code == 0){
                 // 跳转到首页
                 window.location.href = "/";
             } else {
@@ -78,9 +123,30 @@ $(function() {
         </div>
         <div class="form-item"><button id="submit" type="button">登 录</button></div>
         <div class="reg-bar">
-            <a class="reg" href="javascript:">立即注册</a>
-            <a class="forget" href="javascript:">忘记密码</a>
+            <a class="reg" id="registerBtn">立即注册</a>
+            <a class="forget" id="registerBtn">忘记密码</a>
         </div>
     </div>
 </body>
+<!-- 文件 -->
+<div class="registerBox" style="display: none" align="center">
+    <ul>
+        <li></li>
+        <li style="list-style: none;">
+            <div>
+                登录账户：<input type="text" class="name" maxlength="20">
+            </div>
+        </li>
+        <li style="list-style: none; margin-top: 10px;">
+            <div>
+                登录密码：<input type="text" class="pwd" maxlength="20">
+            </div>
+        </li>
+        <li style="list-style: none; margin-top: 10px;">
+            <div>
+                确认密码：<input type="text" class="spwd" maxlength="20">
+            </div>
+        </li>
+    </ul>
+</div>
 </html>

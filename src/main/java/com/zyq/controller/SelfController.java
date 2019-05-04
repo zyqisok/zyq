@@ -24,7 +24,7 @@ import com.zyq.vo.NodeVo;
  */
 @RequestMapping("/self")
 @Controller
-public class SelfController {
+public class SelfController extends BaseController {
 
     @Autowired
     private NodeService nodeService;
