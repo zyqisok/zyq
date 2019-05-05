@@ -151,7 +151,7 @@ public class HttpClientTool {
         // 获取响应对象
         HttpResponse response = null;
         try {
-            response = client.execute(request);
+            response = HttpClients.createDefault().execute(request);
         } catch (Exception e) {
             e.printStackTrace();
         }

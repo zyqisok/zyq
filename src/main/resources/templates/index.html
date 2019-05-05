@@ -4,14 +4,6 @@
 <meta charset="UTF-8">
 <title>HTML5</title>
 </head>
-<script type="text/javascript">
-$(function(){
-    // 点击菜
-    $(".cai-div").click(function(){
-        window.location.href = "/shenghuo/getCai?id=" + $(this).find(".id").val();
-    });
-});
-</script>
 <body>
 <div class="main">
 <!-- 头 -->
@@ -33,4 +25,12 @@ $(function(){
 </section>
 </div>
 </body>
+<script type="text/javascript">
+$(function(){
+    // 点击菜
+    $(".cai-div").click(function(){
+        window.location.href = "/shenghuo/getCai?id=" + $(this).find(".id").val();
+    });
+});
+</script>
 </html>

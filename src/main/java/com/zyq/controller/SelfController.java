@@ -24,7 +24,7 @@ import com.zyq.vo.NodeVo;
  */
 @RequestMapping("/self")
 @Controller
-public class SelfController {
+public class SelfController extends BaseController {
 
     @Autowired
     private NodeService nodeService;
@@ -118,14 +118,9 @@ public class SelfController {
     @RequestMapping("/addFile")
     @ResponseBody
     private Resp<NodeVo> addFile(long pid, String name, String url) {
-        if (pid != 0) {
-            Node find = nodeService.findById(0, pid);
-            if (find == null) {
-                return Resp.error("父文件夹不存在");
-            }
-            if (find.getType() != NodeType.FOLDER) {
-                return Resp.error("父级必须是文件夹");
-            }
+        Node find = nodeService.findById(0, pid);
+        if (find == null || find.getType() != NodeType.FOLDER) {
+            return Resp.error("请选择一个文件夹");
         }
         name = Tool.toString(name);
         int len = name.length();
@@ -185,4 +180,66 @@ public class SelfController {
         nodeService.save(find);
         return Resp.success(getNodeVo(find));
     }
+
+    /**
+     * 修改文件夹
+     * @param id
+     * @param name
+     * @return
+     */
+    @RequestMapping("/updateFile")
+    @ResponseBody
+    public Resp<NodeVo> updateFile(long id, String name, String url) {
+        Node find = nodeService.findById(0, id);
+        if (find == null) {
+            return Resp.error("文件不存在");
+        }
+        if (find.getType() != NodeType.FILE) {
+            return Resp.error("必须是文件");
+        }
+        name = Tool.toString(name);
+        int len = name.length();
+        if (len == 0) {
+            return Resp.error("文件名称不能为空");
+        }
+        if (len > 20) {
+            return Resp.error("文件名称过长");
+        }
+        find.setUpdateTime(new Date());
+        find.setName(name);
+        find.setUrl(url);
+        nodeService.save(find);
+        return Resp.success(getNodeVo(find));
+    }
+
+    /**
+     * 删除文件夹
+     * @param id
+     * @return
+     */
+    @RequestMapping("/deleteFloder")
+    @ResponseBody
+    public Resp<String> deleteFloder(long id) {
+        // 验证该文件夹是否为空
+        List<Node> nodes = nodeService.findByPid(0, id);
+        if (nodes == null || nodes.isEmpty()) {
+            return Resp.error("该文件夹包含子文件，不能删除");
+        }
+        nodeService.deleteById(0, id, NodeType.FOLDER);
+        return Resp.success();
+    }
+
+    /**
+     * 删除文件夹
+     * @param id
+     * @return
+     */
+    @RequestMapping("/deleteFile")
+    @ResponseBody
+    public Resp<String> deleteFile(long id) {
+        // 验证该文件夹是否为空
+        nodeService.deleteById(0, id, NodeType.FILE);
+        return Resp.success();
+    }
+
 }

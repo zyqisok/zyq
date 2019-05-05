@@ -11,10 +11,10 @@
 <!-- 内容 -->
 <section>
     <div>
-        <button id="addFlower">添加文件夹</button>
-        <button id="addFile">添加文件</button>
-        <button id="addNode">删除文件夹</button>
-        <button id="addNode">删除文件</button>
+        <button id="addFlower">新增文件夹</button>
+        <button id="addFile">新增文件</button>
+        <button id="deleteFloder">删除文件夹</button>
+        <button id="deleteFile">删除文件</button>
         <button id="updateFloder">修改文件夹</button>
         <button id="updateFile">修改文件</button>
     </div>
@@ -141,25 +141,98 @@ $(function(){
     $("#addFile").bind("click", function(){
          var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
          var selectedNode = treeObj.getSelectedNodes();
-         var pid = 0;
-         if(selectedNode != null){
-             pid = selectedNode[0].id;
+         if(selectedNode.length == 0){
+             layer.alert("请选择一个文件夹");
+             return;
          }
-         var data = {
-                pid : pid,
-                name : "world"
+         var node = selectedNode[0];
+         if(!node.isParent){
+             layer.alert("请选择一个文件夹");
+             return;
          }
-         $.post("/self/addFile", data, function(rs){
+         var pid = node.id;
+         var index = layer.open({
+        	    type:1,
+                area:['300px','auto'],
+                title: "添加文件",
+                btn:["确定","取消"],
+                content: $(".addFile"),
+                yes: function(){
+                    var name = $(".addFile").find(".name").val();
+                    var url = $(".addFile").find(".url").val();
+                    if(name == "") {
+                        layer.alert("请输入名称");
+                        return;
+                    }
+                    var data = {
+                            pid:pid,
+                            name: name,
+                            url: url
+                    }
+                    $.post("/self/addFile", data, function(rs){
+                        if(rs.code == 0){
+                            layer.close(index);
+                            treeObj.addNodes(node, rs.body);
+                            return;
+                        } else {
+                            layer.alert(rs.msg);
+                        }
+                    });
+                }
+         });
+    });
+    // 删除文件夹
+    $("#deleteFloder").bind("click", function(){
+         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+         var selectedNode = treeObj.getSelectedNodes();
+         if(selectedNode.length == 0){
+             layer.alert("请选择一个文件夹");
+             return;
+         }
+         var node = selectedNode[0];
+         if(!node.isParent){
+             layer.alert("请选择一个文件夹");
+             return;
+         }
+         var id = node.id;
+         $.post("/self/deleteFloder", {id: id}, function(rs){
              if(rs.code == 0){
-                 var newNode = { 
-                         name: rs.body.name, 
-                         id: rs.body.id,
-                         pId: rs.body.pId,
-                         isParent: false
-                 };
-                 treeObj.addNodes(selectedNode[0], newNode);
+                 treeObj.removeNode(node);
+                 var parentNode = node.getParentNode();
+                 treeObj.removeNode(node);
+                 parentNode.isParent = true;
+                 parentNode.open = true;
+                 treeObj.updateNode(parentNode);
+                 return;
              } else {
-                 alert(rs.msg);
+                 layer.alert(rs.msg);
+             }
+         });
+    });
+    // 删除文件
+    $("#deleteFile").bind("click", function(){
+         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+         var selectedNode = treeObj.getSelectedNodes();
+         if(selectedNode.length == 0){
+             layer.alert("请选择一个文件");
+             return;
+         }
+         var node = selectedNode[0];
+         if(node.isParent){
+             layer.alert("请选择一个文件");
+             return;
+         }
+         var id = node.id;
+         $.post("/self/deleteFile", {id: id}, function(rs){
+             if(rs.code == 0){
+                 var parentNode = node.getParentNode();
+                 treeObj.removeNode(node);
+                 parentNode.isParent = true;
+                 parentNode.open = true;
+                 treeObj.updateNode(parentNode);
+                 return;
+             } else {
+                 layer.alert(rs.msg);
              }
          });
     });
@@ -168,6 +241,10 @@ $(function(){
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
         var selectedNode = treeObj.getSelectedNodes();
         if(selectedNode.length == 0){
+            layer.alert("请选择文件夹");
+            return;
+        }
+        if(!selectedNode[0].isParent){
             layer.alert("请选择文件夹");
             return;
         }
@@ -189,7 +266,7 @@ $(function(){
                   if(rs.code == 0){
                       layer.close(index);
                       selectedNode[0].name = rs.body.name;
-                      treeObj.refresh();
+                      treeObj.updateNode(selectedNode[0]);
                   } else {
                       layer.alert(rs.msg);
                   }
@@ -197,15 +274,46 @@ $(function(){
           }
         });
     });
-
-    // 修改文件夹
+    // 修改文件
     $("#updateFile").live("click",function(){
-        layer.open({
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var selectedNode = treeObj.getSelectedNodes();
+        if(selectedNode.length == 0){
+            layer.alert("请选择文件");
+            return;
+        }
+        if(selectedNode[0].isParent){
+            layer.alert("请选择文件");
+            return;
+        }
+        var name = selectedNode[0].name;
+        var url = selectedNode[0].url;
+        var id = selectedNode[0].id;
+        $(".addFile").find(".name").val(name);
+        $(".addFile").find(".url").val(url);
+        var index = layer.open({
           type: 1,
           area:['300px','auto'],
           title: "修改文件",
           btn:["确定","取消"],
-          content: $(".addFile")
+          content: $(".addFile"),
+          yes: function(){
+              var data = {
+            		  id: id,
+                      name: $(".addFile").find(".name").val(),
+                      url: $(".addFile").find(".url").val()
+              }
+              $.post("/self/updateFile", data, function(rs){
+                  if(rs.code == 0){
+                      layer.close(index);
+                      selectedNode[0].name = rs.body.name;
+                      selectedNode[0].url = rs.body.url;
+                      treeObj.updateNode(selectedNode[0]);
+                  } else {
+                      layer.alert(rs.msg);
+                  }
+              });
+          }
         });
     });
 });
