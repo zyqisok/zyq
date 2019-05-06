@@ -87,4 +87,12 @@ public class UserController extends BaseController {
         return Resp.success();
     }
 
+    /**
+     * 退出登录
+     */
+    @RequestMapping("/logout")
+    public String logout() {
+        sessionRemove(SessionKey.USER_OBJECT);
+        return "index";
+    }
 }

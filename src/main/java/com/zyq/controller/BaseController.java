@@ -52,4 +52,8 @@ public class BaseController {
         }
         return user;
     }
+
+    protected long getUserId(){
+        return getUser().getId();
+    }
 }

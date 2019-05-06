@@ -14,6 +14,14 @@ $(function(){
     $(".menu").mouseleave(function(){
         $(this).css("background","#87CEFA");
     });
+    // 用户登录
+    $("#loginBtn").click(function(){
+        window.location.href="/user/toLogin"
+    });
+    // 退出登录
+    $("#logoutBtn").click(function(){
+        window.location.href="/user/logout"
+    });
 });
 </script>
 
@@ -26,5 +34,14 @@ $(function(){
     <div class="menu">音乐</div>
     <div class="menu">博客</div>
     <div class="menu">其他</div>
+    <div class="self-info" th:unless="${session.user_object == null}">
+        <button type="button" id="logoutBtn">退出登录</button>
+    </div>
+    <div class="self-info" th:unless="${session.user_object == null}" >
+        <span th:text="${session.user_object.name}"></span>
+    </div>
+    <div class="self-info" th:unless="${session.user_object != null}" >
+        <button type="button" id="loginBtn">用户登录</button>
+    </div>
 </header>
 <hr/>

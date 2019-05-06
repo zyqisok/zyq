@@ -27,8 +27,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=utf-8");
             PrintWriter pw = response.getWriter();
-            pw.write("用户请先登录");
+            pw.flush();
+            pw.println("<script>");
+            pw.println("alert('请点击右上角进行登录');");
+            pw.println("history.back();");
+            pw.println("</script>");
             return false;
+            // response.sendRedirect(request.getContextPath() + "/user/toLogin");
         }
         // 用户已登录，则返回true, 放行该请求
         return true;

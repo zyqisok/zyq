@@ -38,7 +38,7 @@ public class SelfController extends BaseController {
     @ResponseBody
     public Resp<List<NodeVo>> initNodeTree(){
         // 获取祖先节点列表
-        List<Node> nodeList = nodeService.findFirstList(0);
+        List<Node> nodeList = nodeService.findFirstList(getUserId());
         return Resp.success(getNodeVoList(nodeList));
     }
 
@@ -86,7 +86,7 @@ public class SelfController extends BaseController {
     @ResponseBody
     private Resp<NodeVo> addFloder(long pid, String name) {
         if (pid != 0) {
-            Node find = nodeService.findById(0, pid);
+            Node find = nodeService.findById(getUserId(), pid);
             if (find == null) {
                 return Resp.error("父文件夹不存在");
             }
@@ -107,18 +107,18 @@ public class SelfController extends BaseController {
         node.setName(name);
         node.setCreateTime(new Date());
         node.setPid(pid);
+        node.setUid(getUserId());
         nodeService.save(node);
         return Resp.success(getNodeVo(node));
     }
 
     /**
-     * 添加文件夹
-     * @return
+     * 添加文件
      */
     @RequestMapping("/addFile")
     @ResponseBody
     private Resp<NodeVo> addFile(long pid, String name, String url) {
-        Node find = nodeService.findById(0, pid);
+        Node find = nodeService.findById(getUserId(), pid);
         if (find == null || find.getType() != NodeType.FOLDER) {
             return Resp.error("请选择一个文件夹");
         }
@@ -136,6 +136,7 @@ public class SelfController extends BaseController {
         node.setCreateTime(new Date());
         node.setPid(pid);
         node.setUrl(Tool.toString(url));
+        node.setUid(getUserId());
         nodeService.save(node);
         return Resp.success(getNodeVo(node));
     }
@@ -147,7 +148,7 @@ public class SelfController extends BaseController {
     @RequestMapping("/getChildList")
     @ResponseBody
     public Resp<List<NodeVo>> getChildList(long pid) {
-        List<Node> nodeList = nodeService.findByPid(0, pid);
+        List<Node> nodeList = nodeService.findByPid(getUserId(), pid);
         return Resp.success(getNodeVoList(nodeList));
     }
 
@@ -160,7 +161,7 @@ public class SelfController extends BaseController {
     @RequestMapping("/updateFloder")
     @ResponseBody
     public Resp<NodeVo> updateFloder(long id, String name) {
-        Node find = nodeService.findById(0, id);
+        Node find = nodeService.findById(getUserId(), id);
         if (find == null) {
             return Resp.error("文件夹不存在");
         }
@@ -190,7 +191,7 @@ public class SelfController extends BaseController {
     @RequestMapping("/updateFile")
     @ResponseBody
     public Resp<NodeVo> updateFile(long id, String name, String url) {
-        Node find = nodeService.findById(0, id);
+        Node find = nodeService.findById(getUserId(), id);
         if (find == null) {
             return Resp.error("文件不存在");
         }
@@ -221,7 +222,7 @@ public class SelfController extends BaseController {
     @ResponseBody
     public Resp<String> deleteFloder(long id) {
         // 验证该文件夹是否为空
-        List<Node> nodes = nodeService.findByPid(0, id);
+        List<Node> nodes = nodeService.findByPid(getUserId(), id);
         if (nodes == null || nodes.isEmpty()) {
             return Resp.error("该文件夹包含子文件，不能删除");
         }
@@ -238,7 +239,7 @@ public class SelfController extends BaseController {
     @ResponseBody
     public Resp<String> deleteFile(long id) {
         // 验证该文件夹是否为空
-        nodeService.deleteById(0, id, NodeType.FILE);
+        nodeService.deleteById(getUserId(), id, NodeType.FILE);
         return Resp.success();
     }
 

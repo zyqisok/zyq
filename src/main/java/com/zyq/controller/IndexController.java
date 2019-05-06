@@ -22,7 +22,7 @@ public class IndexController {
      */
     @RequestMapping("/")
     public String index(Model model, Pager pager){
-        model.addAttribute("caiList", juheCaiService.findByPage(pager));
+         // model.addAttribute("caiList", juheCaiService.findByPage(pager));
         model.addAttribute("pager", pager);
         return "index";
     }
