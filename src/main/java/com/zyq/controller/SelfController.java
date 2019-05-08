@@ -99,7 +99,7 @@ public class SelfController extends BaseController {
         if (len == 0) {
             return Resp.error("文件夹名称不能为空");
         }
-        if (len > 20) {
+        if (len > 255) {
             return Resp.error("文件夹名称过长");
         }
         Node node = new Node();
@@ -127,7 +127,7 @@ public class SelfController extends BaseController {
         if (len == 0) {
             return Resp.error("文件名称不能为空");
         }
-        if (len > 20) {
+        if (len > 255) {
             return Resp.error("文件名称过长");
         }
         Node node = new Node();
@@ -173,7 +173,7 @@ public class SelfController extends BaseController {
         if (len == 0) {
             return Resp.error("文件名称不能为空");
         }
-        if (len > 20) {
+        if (len > 255) {
             return Resp.error("文件名称过长");
         }
         find.setUpdateTime(new Date());
@@ -203,7 +203,7 @@ public class SelfController extends BaseController {
         if (len == 0) {
             return Resp.error("文件名称不能为空");
         }
-        if (len > 20) {
+        if (len > 255) {
             return Resp.error("文件名称过长");
         }
         find.setUpdateTime(new Date());
@@ -222,11 +222,12 @@ public class SelfController extends BaseController {
     @ResponseBody
     public Resp<String> deleteFloder(long id) {
         // 验证该文件夹是否为空
-        List<Node> nodes = nodeService.findByPid(getUserId(), id);
-        if (nodes == null || nodes.isEmpty()) {
+        long userId = getUserId();
+        List<Node> nodes = nodeService.findByPid(userId, id);
+        if (nodes != null && !nodes.isEmpty()) {
             return Resp.error("该文件夹包含子文件，不能删除");
         }
-        nodeService.deleteById(0, id, NodeType.FOLDER);
+        nodeService.deleteById(userId, id, NodeType.FOLDER);
         return Resp.success();
     }
 
